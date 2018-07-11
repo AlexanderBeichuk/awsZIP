@@ -38,4 +38,5 @@ exports.handler = function (event, context) {
     context.fail(err)
   }
 
+  callback(null, zipFile)
 };
