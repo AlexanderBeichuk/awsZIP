@@ -1,5 +1,5 @@
 /**
- * Created by user on 11.07.2018.
+ * Created by user on 11.07.2018. //PR
  */
 
 var AWS = require('aws-sdk');
