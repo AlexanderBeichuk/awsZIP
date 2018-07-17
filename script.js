@@ -8,7 +8,6 @@ var s3Zip = require('s3-zip');
 exports.handler = function (event, context) {
   console.log('event', event);
 
-
   var region = 'REGION';
   var bucket = 'BUCKET';
   var folder = 'FOLDER';
