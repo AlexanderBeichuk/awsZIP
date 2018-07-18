@@ -14,33 +14,46 @@ exports.handler = function (event, context) {
   const zipFileName = 'partnumber-rev.zip';
   let files = [];
 
+
+
   event.data.forEach(item => {
     const urlName = item.split('/');
-    files.push(urlName[urlName.length-1]);
-  });
+  files.push(urlName[urlName.length-1]);
+});
+
+  console.log('------------------------------------------------------');
+  console.log(bucket);
+  console.log(folder);
+  console.log(files);
+  console.log('------------------------------------------------------');
 
   try {
 
     const body = s3Zip.archive({ region: region, bucket: bucket}, folder, files);
+    console.log('**********1***********');
     const zipParams = { params: { Bucket: bucket, Key: folder + zipFileName } };
     const zipFile = new AWS.S3(zipParams);
-    console.log(zipFile);
+    console.log('**********2***********');
 
     zipFile.upload({ Body: body })
       .on('httpUploadProgress', uploadEvent => {
-        console.log(uploadEvent);
-      })
-      .send((uploadError, uploadResponse) => {
-        if (uploadError) {
-          context.fail(uploadError);
-        }
-        console.log(uploadResponse);
-        context.succeed(uploadResponse);
-      });
+      console.log('**********3***********');
+      console.log(uploadEvent);
+  })
+  .send((uploadError, uploadResponse) => {
+      console.log('**********4***********');
+    if (uploadError) {
+      context.fail(uploadError);
+      callback(null, zipFile);
+    }
+    context.succeed(uploadResponse);
+    callback(null, zipFile);
+  });
 
   } catch (zipError) {
+    console.log('**********5***********');
     context.fail(zipError);
+    callback(null, zipError);
   }
-
-  callback(null, zipFile);
+  console.log('**********6***********');
 };
