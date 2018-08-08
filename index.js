@@ -9,10 +9,11 @@ exports.handler = function (event, context, callback) {
    const urlComponents = event.data[0].split(regex);
    const separateIndex = urlComponents[4].lastIndexOf('/');
 
-  const region = 'us-west-1';
+  const region = 'us-east-1';
   const bucket = urlComponents[2] /*'testzipbucket'*/;
   const folder = urlComponents[3] + urlComponents[4].slice(0, separateIndex) + '/';
   const folderSplit = folder.split('/');
+  console.log(folderSplit);
   /*const key = folder + zipFileName;*/
   let files = [];
 
@@ -28,7 +29,7 @@ exports.handler = function (event, context, callback) {
     const zip = {
       bucket: 'fuseplm-attachments',
       folder: 'zip/',
-      fileName: folderSplit[folderSplit.length - 2]/*'partnumber-rev-' + Math.floor(Math.random() * Math.floor(10000000))*/ + '.zip'
+      fileName: event.zipfilename
     };
 
     const zipParams = {
